@@ -1,0 +1,5 @@
+#POST http://localhost:8080/v1/member
+
+# GET http://localhost:8080/v1/members
+
+GET http://localhost:8080/v1/member?id=1
