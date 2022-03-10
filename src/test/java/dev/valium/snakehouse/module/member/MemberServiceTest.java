@@ -1,6 +1,6 @@
 package dev.valium.snakehouse.module.member;
 
-import dev.valium.snakehouse.module.member.exception.MemberException;
+import dev.valium.snakehouse.module.member.exception.NoSuchMemberException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,7 +36,7 @@ class MemberServiceTest {
 
     @Test @DisplayName("ID로_맴버조회_실패")
     public void ID로_맴버조회_실패() throws Exception {
-        Assertions.assertThatExceptionOfType(MemberException.class)
+        Assertions.assertThatExceptionOfType(NoSuchMemberException.class)
                 .isThrownBy(() -> memberService.findMember(0L));
     }
 
