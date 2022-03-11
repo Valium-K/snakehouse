@@ -1,9 +1,11 @@
 package dev.valium.snakehouse.module.member;
 
 import dev.valium.snakehouse.module.base.BaseEntity;
+import dev.valium.snakehouse.module.leaderboard.Leaderboard;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.UUID;
 
 @Entity

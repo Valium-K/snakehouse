@@ -28,8 +28,8 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
-    public void deleteMember(Long id) {
-        memberRepository.deleteById(id);
+    public void deleteMember(Member member) {
+        memberRepository.delete(member);
     }
 
     public Member modifyMember(Member fromMember, Member toMember) {

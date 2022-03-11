@@ -1,4 +1,4 @@
-package dev.valium.snakehouse.module.api.v1.member.dto;
+package dev.valium.snakehouse.module.member.dto;
 
 import dev.valium.snakehouse.module.member.Member;
 import lombok.AccessLevel;

@@ -4,10 +4,9 @@ package dev.valium.snakehouse.module.api.v1.member;
 import dev.valium.snakehouse.module.api.model.response.CommonResult;
 import dev.valium.snakehouse.module.api.model.response.ListResult;
 import dev.valium.snakehouse.module.api.model.response.SingleResult;
-import dev.valium.snakehouse.module.api.service.ResponseService;
-import dev.valium.snakehouse.module.api.v1.member.dto.MemberDTO;
+import dev.valium.snakehouse.module.api.model.response.ResponseService;
+import dev.valium.snakehouse.module.member.dto.MemberDTO;
 import dev.valium.snakehouse.module.member.Member;
-import dev.valium.snakehouse.module.member.MemberRepository;
 import dev.valium.snakehouse.module.member.MemberService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,13 +22,13 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping(value = "/v1")
 public class MemberController {
-    private final MemberRepository memberRepository;
+
     private final MemberService memberService;
     private final ResponseService responseService;
 
     /********************************** 조회 ***************************************/
     @ApiOperation(value = "회원 조회", notes = "회원 Id에 해당하는 정보를 조회한다.")
-    @GetMapping(value = "/member/{id}")
+    @GetMapping(value = "/members/{id}")
     public SingleResult<MemberDTO> findMember(
             @ApiParam(value = "회원 ID", required = true) @PathVariable(name = "id") Long id) {
         Member member = memberService.findMember(id);
@@ -54,9 +53,10 @@ public class MemberController {
         return responseService.getListResult(MemberDTOs);
     }
 
+
     /********************************** 입력 ***************************************/
     @ApiOperation(value = "회원 입력", notes = "회원을 입력한다.")
-    @PostMapping(value = "/member")
+    @PostMapping(value = "/members")
     public SingleResult<MemberDTO> saveMember(
             @ApiParam(value = "회원 이름", required = true) @RequestParam String name) {
         Member member = memberService.saveMember(Member.createMember(name));
@@ -66,9 +66,9 @@ public class MemberController {
 
     /********************************** 수정 ***************************************/
     @ApiOperation(value = "회원 수정", notes = "ID에 해당하는 회원정보를 수정한다.")
-    @PutMapping(value = "/member")
+    @PutMapping(value = "/members/{id}")
     public SingleResult<MemberDTO> modifyMember(
-            @ApiParam(value = "회원 ID", required = true) @RequestParam Long id,
+            @ApiParam(value = "회원 ID", required = true) @PathVariable(name = "id") Long id,
             @ApiParam(value = "회원 이름", required = true) @RequestParam String name) {
         Member member = memberService.findMember(id);
         Member modifiedMember = memberService.modifyMember(member, Member.createMember(name));
@@ -78,11 +78,11 @@ public class MemberController {
 
     /********************************** 삭제 ***************************************/
     @ApiOperation(value = "회원 삭제", notes = "ID에 해당하는 회원을 삭제한다.")
-    @DeleteMapping(value = "/member")
+    @DeleteMapping(value = "/members/{id}")
     public CommonResult deleteMember(
-            @ApiParam(value = "회원 ID", required = true) @RequestParam Long id) {
+            @ApiParam(value = "회원 ID", required = true) @PathVariable(name = "id") Long id) {
         Member member = memberService.findMember(id);
-        memberService.deleteMember(id);
+        memberService.deleteMember(member);
 
         return responseService.getSuccessResult();
     }

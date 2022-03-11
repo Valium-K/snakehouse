@@ -1,4 +1,4 @@
-package dev.valium.snakehouse.module.api.service.enums;
+package dev.valium.snakehouse.module.api.model.response.enums;
 
 public enum MemberResponse {
     NO_SUCH_MEMBER_ID(-1000, "id에 해당하는 맴버를 찾을 수 없습니다."),
