@@ -1,4 +1,4 @@
-package dev.valium.snakehouse.module.api.service;
+package dev.valium.snakehouse.module.api.model.response;
 
 import dev.valium.snakehouse.module.api.model.response.CommonResult;
 import dev.valium.snakehouse.module.api.model.response.ListResult;
@@ -30,6 +30,7 @@ public class ResponseService {
     public <T> SingleResult<T> getSingleResult(T data) {
         SingleResult<T> singleResult = new SingleResult<>();
         singleResult.setData(data);
+        setSuccessResult(singleResult);
 
         return singleResult;
     }
@@ -37,6 +38,7 @@ public class ResponseService {
     public <T> ListResult<T> getListResult(List<T> list) {
         ListResult<T> results = new ListResult<>();
         results.setList(list);
+        setSuccessResult(results);
 
         return results;
     }
