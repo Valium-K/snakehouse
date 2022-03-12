@@ -1,8 +1,10 @@
 package dev.valium.snakehouse.module.api.v1.leaderboard;
 
+import dev.valium.snakehouse.module.api.model.response.CommonResult;
 import dev.valium.snakehouse.module.api.model.response.ListResult;
 import dev.valium.snakehouse.module.api.model.response.ResponseService;
 import dev.valium.snakehouse.module.api.model.response.SingleResult;
+import dev.valium.snakehouse.module.game.Title;
 import dev.valium.snakehouse.module.leaderboard.dto.HistoryDTO;
 import dev.valium.snakehouse.module.leaderboard.Leaderboard;
 import dev.valium.snakehouse.module.leaderboard.LeaderboardService;
@@ -10,10 +12,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,5 +46,29 @@ public class LeaderboardController {
                 .collect(Collectors.toList());
 
         return responseService.getListResult(collect);
+    }
+
+    @ApiOperation(value = "회원의 게임 점수 입력", notes = "회원의 해당 게임 점수를 입력한다.")
+    @PostMapping(value = "/members/{id}/game/{game-name}/score/{score}")
+    public CommonResult saveMemberGameScore (
+            @ApiParam(value = "회원 ID", required = true) @PathVariable(name = "id") Long id,
+            @ApiParam(value = "게임 타이틀", required = true) @PathVariable(name = "game-name") Title title,
+            @ApiParam(value = "게임 점수", required = true) @PathVariable(name = "score") Long score) {
+
+        Title.checkTitle(title);
+
+        leaderboardService.saveMemberGameScore(id, title, score);
+
+        return responseService.getSuccessResult();
+    }
+
+    @ApiOperation(value = "전체 플레이 기록 삭제", notes = "회원의 전체 플레이 기록을 삭제한다.")
+    @DeleteMapping(value = "/members/{id}/history")
+    public CommonResult deleteAllHistory (
+            @ApiParam(value = "회원 ID", required = true) @PathVariable(name = "id") Long id) {
+
+        leaderboardService.deleteAllHistory(id);
+
+        return responseService.getSuccessResult();
     }
 }

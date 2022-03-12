@@ -13,7 +13,9 @@ import java.util.Optional;
 public interface LeaderboardRepository extends JpaRepository<Leaderboard, Long> {
 
     @EntityGraph(attributePaths = {"gameScore"}, type = EntityGraph.EntityGraphType.LOAD)
-    Optional<Leaderboard> findFirstByMemberId(Long memberId);
+    Optional<Leaderboard> findFirstByMemberIdOrderByCreatedDateDesc(Long memberId);
     @EntityGraph(attributePaths = {"gameScore"}, type = EntityGraph.EntityGraphType.LOAD)
     List<Leaderboard> findAllByMemberId(Long memberId);
+    @Query("delete from Leaderboard as lb where lb in :lbs")
+    void deleteAllHistory(@Param("lbs") List<Leaderboard> leaderboards);
 }
