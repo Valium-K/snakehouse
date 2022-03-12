@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter @Setter @Builder(access = AccessLevel.PROTECTED)
+@Getter @Setter @Builder(access = AccessLevel.PRIVATE)
 public class MemberDTO {
     private Long id;
     private String name;
