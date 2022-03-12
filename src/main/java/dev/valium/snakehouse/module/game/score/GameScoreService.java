@@ -18,16 +18,15 @@ public class GameScoreService {
     @Transactional(readOnly = true)
     public GameScore findHighScoreOf(Title title) {
         return gameScoreRepository.findFirstByTitleOrderByScoreDesc(title)
-                .orElseThrow(() -> new NoSuchGameException(title));
+                .orElse(GameScore.createGameScore(null, 0L));
     }
 
     @Transactional(readOnly = true)
     public List<GameScore> findAllScoreOf(Title title) {
         return gameScoreRepository.findAllByTitleOrderByScoreDesc(title);
-
     }
 
-    public GameScore saveScore(Title title, Long score) {
+    public GameScore saveGameScore(Title title, Long score) {
         return gameScoreRepository.save(GameScore.createGameScore(title, score));
     }
 
