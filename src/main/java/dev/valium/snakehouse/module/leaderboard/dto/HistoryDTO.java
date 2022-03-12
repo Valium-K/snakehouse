@@ -10,7 +10,7 @@ import lombok.Setter;
 import java.time.ZonedDateTime;
 
 @Getter @Setter
-@Builder(access = AccessLevel.PROTECTED)
+@Builder(access = AccessLevel.PRIVATE)
 public class HistoryDTO {
     private Title title;
     private ZonedDateTime dateTime;
