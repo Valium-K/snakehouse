@@ -26,21 +26,21 @@ public class LeaderboardController {
     private final ResponseService responseService;
 
     @ApiOperation(value = "마지막 플레이 기록 조회", notes = "회원의 마지막 플레이 기록을 조회한다.")
-    @GetMapping(value = "/members/{id}/history/latest")
+    @GetMapping(value = "/members/{member-id}/history/latest")
     public SingleResult<HistoryDTO> findLatestHistoryBy(
-            @ApiParam(value = "회원 ID", required = true) @PathVariable(name = "id") Long id) {
+            @ApiParam(value = "회원 ID", required = true) @PathVariable(name = "member-id") String memberId) {
 
-        Leaderboard latestHistory = leaderboardService.findLatestHistory(id);
+        Leaderboard latestHistory = leaderboardService.findLatestHistory(memberId);
 
         return responseService.getSingleResult(HistoryDTO.createHistoryDTO(latestHistory));
     }
 
     @ApiOperation(value = "전체 플레이 기록 조회", notes = "회원의 전체 플레이 기록을 조회한다.")
-    @GetMapping(value = "/members/{id}/history")
+    @GetMapping(value = "/members/{member-id}/history")
     public ListResult<HistoryDTO> findAllHistoryBy (
-            @ApiParam(value = "회원 ID", required = true) @PathVariable(name = "id") Long id) {
+            @ApiParam(value = "회원 ID", required = true) @PathVariable(name = "member-id") String memberId) {
 
-        List<Leaderboard> allHistory = leaderboardService.findAllHistory(id);
+        List<Leaderboard> allHistory = leaderboardService.findAllHistory(memberId);
         List<HistoryDTO> collect = allHistory.stream()
                 .map(HistoryDTO::createHistoryDTO)
                 .collect(Collectors.toList());
@@ -49,15 +49,15 @@ public class LeaderboardController {
     }
 
     @ApiOperation(value = "회원의 게임 점수 입력", notes = "회원의 해당 게임 점수를 입력한다.")
-    @PostMapping(value = "/members/{id}/game/{game-name}/score/{score}")
+    @PostMapping(value = "/members/{member-id}/game/{game-name}/score/{score}")
     public CommonResult saveMemberGameScore (
-            @ApiParam(value = "회원 ID", required = true) @PathVariable(name = "id") Long id,
+            @ApiParam(value = "회원 ID", required = true) @PathVariable(name = "id") String memberId,
             @ApiParam(value = "게임 타이틀", required = true) @PathVariable(name = "game-name") Title title,
             @ApiParam(value = "게임 점수", required = true) @PathVariable(name = "score") Long score) {
 
         Title.checkTitle(title);
 
-        leaderboardService.saveMemberGameScore(id, title, score);
+        leaderboardService.saveMemberGameScore(memberId, title, score);
 
         return responseService.getSuccessResult();
     }
@@ -65,9 +65,9 @@ public class LeaderboardController {
     @ApiOperation(value = "전체 플레이 기록 삭제", notes = "회원의 전체 플레이 기록을 삭제한다.")
     @DeleteMapping(value = "/members/{id}/history")
     public CommonResult deleteAllHistory (
-            @ApiParam(value = "회원 ID", required = true) @PathVariable(name = "id") Long id) {
+            @ApiParam(value = "회원 ID", required = true) @PathVariable(name = "id") String memberId) {
 
-        leaderboardService.deleteAllHistory(id);
+        leaderboardService.deleteAllHistory(memberId);
 
         return responseService.getSuccessResult();
     }

@@ -19,7 +19,7 @@ public class LeaderboardService {
     private final MemberService memberService;
 
     @Transactional(readOnly = true)
-    public Leaderboard findLatestHistory(Long memberId) {
+    public Leaderboard findLatestHistory(String memberId) {
         // member가 있는지 먼저 찾는다. - 추가쿼리
         Member member = memberService.findMember(memberId);
 
@@ -28,20 +28,20 @@ public class LeaderboardService {
     }
 
     @Transactional(readOnly = true)
-    public List<Leaderboard> findAllHistory(Long memberId) {
+    public List<Leaderboard> findAllHistory(String memberId) {
         // member가 있는지 먼저 찾는다. - 추가쿼리
         Member member = memberService.findMember(memberId);
 
         return leaderboardRepository.findAllByMemberId(member.getId());
     }
 
-    public void deleteAllHistory(Long memberId) {
+    public void deleteAllHistory(String memberId) {
         List<Leaderboard> allHistory = findAllHistory(memberId);
 
         leaderboardRepository.deleteAllHistory(allHistory);
     }
 
-    public Leaderboard saveMemberGameScore(Long memberId, Title title, Long score) {
+    public Leaderboard saveMemberGameScore(String memberId, Title title, Long score) {
         Member member = memberService.findMember(memberId);
         GameScore gameScore = GameScore.createGameScore(title, score);
         Leaderboard leaderboard = Leaderboard.createLeaderboard(member, gameScore);
