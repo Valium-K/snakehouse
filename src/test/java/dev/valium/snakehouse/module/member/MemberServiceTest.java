@@ -21,9 +21,11 @@ class MemberServiceTest {
     @Autowired private MemberRepository memberRepository;
     @Autowired private MemberService memberService;
 
+    private final String UNKNOWN_MEMBER = "asfoiwen3409nwe=2j";
+
     @BeforeEach
     void beforeEach() {
-        Member member = Member.createMember("Member1");
+        Member member = Member.createMember("Member1", "password", "mem");
         memberService.saveMember(member);
     }
 
@@ -33,11 +35,10 @@ class MemberServiceTest {
         memberRepository.delete(member);
     }
 
-
     @Test @DisplayName("ID로_맴버조회_실패")
     public void ID로_맴버조회_실패() throws Exception {
         Assertions.assertThatExceptionOfType(NoSuchMemberException.class)
-                .isThrownBy(() -> memberService.findMember(0L));
+                .isThrownBy(() -> memberService.findMember(UNKNOWN_MEMBER));
     }
 
 

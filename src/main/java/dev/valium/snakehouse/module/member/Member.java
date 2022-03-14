@@ -5,6 +5,8 @@ import dev.valium.snakehouse.module.leaderboard.Leaderboard;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,24 +20,30 @@ public class Member extends BaseEntity {
     @Column(name = "member_id")
     private Long id;
 
-    @Column(nullable = false, unique = true, length = 30)
-    private String uid;
+    @Column(nullable = false, unique = true, length = 30, name = "member_uid")
+    private String memberId;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 100)
     private String name;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 100)
     private String password;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Builder.Default
+    private List<String> roles = new ArrayList<>();
 
     public void setName(String name) {
         this.name = name;
     }
     public void setPassword(String password) { this.password = password; }
 
-    public static Member createMember(String name) {
+    public static Member createMember(String memberId, String encryptedPassword, String name) {
         return Member.builder()
+                .memberId(memberId)
+                .password(encryptedPassword)
+                .roles(Collections.singletonList("ROLE_USER"))
                 .name(name)
-                .uid(UUID.randomUUID().toString().substring(0, 30))
                 .build();
     }
 }

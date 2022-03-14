@@ -15,8 +15,9 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     @Transactional(readOnly = true)
-    public Member findMember(Long id) {
-        return memberRepository.findById(id).orElseThrow(() -> new NoSuchMemberException(id));
+    public Member findMember(String memberId) {
+        return memberRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new NoSuchMemberException(memberId));
     }
 
     @Transactional(readOnly = true)
@@ -33,7 +34,12 @@ public class MemberService {
     }
 
     public Member modifyMember(Member fromMember, Member toMember) {
-        fromMember.setName(toMember.getName());
+        if(fromMember.getName() != null && !fromMember.getName().equals(toMember.getName())) {
+            fromMember.setName(toMember.getName());
+        }
+        if(fromMember.getPassword() != null && !fromMember.getPassword().equals(toMember.getPassword())) {
+            fromMember.setPassword(toMember.getPassword());
+        }
 
         return fromMember;
     }
