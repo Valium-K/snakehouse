@@ -7,6 +7,7 @@ import dev.valium.snakehouse.module.api.model.response.enums.LeaderboardResponse
 import dev.valium.snakehouse.module.api.model.response.enums.MemberResponse;
 import dev.valium.snakehouse.module.game.score.exception.NoPlayHistoryException;
 import dev.valium.snakehouse.module.game.score.exception.NoSuchGameException;
+import dev.valium.snakehouse.module.member.exception.LogInException;
 import dev.valium.snakehouse.module.member.exception.NoSuchMemberException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,12 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.OK)
     protected CommonResult noSuchMemberException(HttpServletRequest request, NoSuchMemberException e) {
         return responseService.getFailResult(MemberResponse.NO_SUCH_MEMBER_ID.getCode(), MemberResponse.NO_SUCH_MEMBER_ID.getMsg());
+    }
+
+    @ExceptionHandler(LogInException.class)
+    @ResponseStatus(HttpStatus.OK)
+    protected CommonResult idPwErrorException(HttpServletRequest request, LogInException e) {
+        return responseService.getFailResult(MemberResponse.LOGIN_ERROR.getCode(), MemberResponse.LOGIN_ERROR.getMsg());
     }
 
     @ExceptionHandler(NoSuchGameException.class)
