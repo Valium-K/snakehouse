@@ -24,9 +24,13 @@ public class Member extends BaseEntity {
     @Column(nullable = false, length = 50)
     private String name;
 
+    @Column(nullable = false, length = 50)
+    private String password;
+
     public void setName(String name) {
         this.name = name;
     }
+    public void setPassword(String password) { this.password = password; }
 
     public static Member createMember(String name) {
         return Member.builder()

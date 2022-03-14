@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### SECURE SMTP###
+src/main/resources/application-dev.yml
+src/main/resources/application-linux.yml
