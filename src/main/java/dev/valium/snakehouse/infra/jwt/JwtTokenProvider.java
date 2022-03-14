@@ -1,33 +1,34 @@
-package dev.valium.snakehouse.module.api.security;
+package dev.valium.snakehouse.infra.jwt;
 
+import dev.valium.snakehouse.module.member.MemberDetailsService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
-import java.time.ZonedDateTime;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
 @Component
 @RequiredArgsConstructor
+@Profile("dev")
 public class JwtTokenProvider {
 
     @Value("spring.jwt.secret")
     private String secretKey;
-    private Long tokenValidMilliseconds = 1000L * 60 * 60;
-    private final UserDetailsService userDetailsService;
+    private Long tokenValidMilliseconds = JwtConfig.TOKEN_VALID_MILLISECONDS;
+    private final MemberDetailsService memberDetailsService;
 
     @PostConstruct
     protected void init() {
@@ -50,7 +51,7 @@ public class JwtTokenProvider {
 
     // Jwt 토큰으로 인증 정보를 조회
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(getUserPk(token));
+        UserDetails userDetails = memberDetailsService.loadUserById(Long.valueOf(getUserPk(token)));
 
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
