@@ -1,5 +1,6 @@
 package dev.valium.snakehouse.module.member;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.valium.snakehouse.module.base.BaseEntity;
 import dev.valium.snakehouse.module.leaderboard.Leaderboard;
 import lombok.*;
@@ -17,17 +18,21 @@ import java.util.UUID;
 public class Member extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "member_id")
+    @Column(name = "member_pk")
     private Long id;
 
-    @Column(nullable = false, unique = true, length = 30, name = "member_uid")
+    @Column(nullable = false, unique = true, length = 30)
     private String memberId;
 
     @Column(nullable = false, length = 100)
     private String name;
 
-    @Column(nullable = false, length = 100)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Column(nullable = true, length = 100)
     private String password;
+
+    @Column(length = 100)
+    private String provider;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
@@ -42,6 +47,16 @@ public class Member extends BaseEntity {
         return Member.builder()
                 .memberId(memberId)
                 .password(encryptedPassword)
+                .roles(Collections.singletonList("ROLE_USER"))
+                .name(name)
+                .build();
+    }
+
+    public static Member createSocialMember(String memberId, String name, String provider) {
+        return Member.builder()
+                .memberId(memberId)
+                .password(provider) // UserDetails가 password null을 허용 안한다. dummy값을 provier로 정함.
+                .provider(provider)
                 .roles(Collections.singletonList("ROLE_USER"))
                 .name(name)
                 .build();

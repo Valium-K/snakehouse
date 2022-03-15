@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -34,13 +35,24 @@ public class MemberService {
     }
 
     public Member modifyMember(Member fromMember, Member toMember) {
-        if(fromMember.getName() != null && !fromMember.getName().equals(toMember.getName())) {
+        if (fromMember.getName() != null && !fromMember.getName().equals(toMember.getName())) {
             fromMember.setName(toMember.getName());
         }
-        if(fromMember.getPassword() != null && !fromMember.getPassword().equals(toMember.getPassword())) {
+        if (fromMember.getPassword() != null && !fromMember.getPassword().equals(toMember.getPassword())) {
             fromMember.setPassword(toMember.getPassword());
         }
 
         return fromMember;
+    }
+
+    public Member findByMemberIdAndProvider(String memberId, String provider) {
+        return memberRepository.findByMemberIdAndProvider(memberId, provider)
+                .orElseThrow(NoSuchMemberException::new);
+    }
+
+    public boolean predicateByMemberIdAndProvider(String memberId, String provider) {
+        Optional<Member> member = memberRepository.findByMemberIdAndProvider(memberId, provider);
+
+        return member.isPresent();
     }
 }
