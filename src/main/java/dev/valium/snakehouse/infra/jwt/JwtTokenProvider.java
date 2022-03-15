@@ -27,7 +27,6 @@ public class JwtTokenProvider {
 
     @Value("spring.jwt.secret")
     private String secretKey;
-    private Long tokenValidMilliseconds = JwtConfig.TOKEN_VALID_MILLISECONDS;
     private final MemberDetailsService memberDetailsService;
 
     @PostConstruct
@@ -35,8 +34,8 @@ public class JwtTokenProvider {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String createToken(String userPk, List<String> roles) {
-        Claims claims = Jwts.claims().setSubject(userPk);
+    public String createToken(String memberId, List<String> roles) {
+        Claims claims = Jwts.claims().setSubject(memberId);
         claims.put("roles", roles);
 
         Date date = new Date();
@@ -44,20 +43,20 @@ public class JwtTokenProvider {
         return Jwts.builder()
                 .setClaims(claims) // 데이터
                 .setIssuedAt(date) // 토큰 발행일자
-                .setExpiration(new Date(date.getTime() + tokenValidMilliseconds))
+                .setExpiration(new Date(date.getTime() + JwtConfig.TOKEN_VALID_MILLISECONDS))
                 .signWith(SignatureAlgorithm.HS256, secretKey) // secret값 암호화
                 .compact();
     }
 
     // Jwt 토큰으로 인증 정보를 조회
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = memberDetailsService.loadUserById(Long.valueOf(getUserPk(token)));
+        UserDetails userDetails = memberDetailsService.loadUserByUsername(getUserId(token));
 
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
     // Jwt 토큰으로 회원 추출
-    public String getUserPk(String token) {
+    public String getUserId(String token) {
         return Jwts.parser()
                 .setSigningKey(secretKey)
                 .parseClaimsJws(token)
