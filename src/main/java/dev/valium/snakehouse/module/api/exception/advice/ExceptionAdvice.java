@@ -6,6 +6,7 @@ import dev.valium.snakehouse.module.api.model.response.enums.*;
 import dev.valium.snakehouse.module.exception.AuthenticationEntryPointException;
 import dev.valium.snakehouse.module.game.score.exception.NoPlayHistoryException;
 import dev.valium.snakehouse.module.game.score.exception.NoSuchGameException;
+import dev.valium.snakehouse.module.member.exception.DuplicatedMemberException;
 import dev.valium.snakehouse.module.member.exception.LogInException;
 import dev.valium.snakehouse.module.member.exception.NoSuchMemberException;
 import dev.valium.snakehouse.module.oauth.exception.CommunicationException;
@@ -31,6 +32,12 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.OK)
     protected CommonResult noSuchMemberException(HttpServletRequest request, NoSuchMemberException e) {
         return responseService.getFailResult(MemberResponse.NO_SUCH_MEMBER_ID.getCode(), MemberResponse.NO_SUCH_MEMBER_ID.getMsg());
+    }
+
+    @ExceptionHandler(DuplicatedMemberException.class)
+    @ResponseStatus(HttpStatus.OK)
+    protected CommonResult duplicatedMemberException(HttpServletRequest request, DuplicatedMemberException e) {
+        return responseService.getFailResult(MemberResponse.DUPLICATED_MEMBER.getCode(), MemberResponse.DUPLICATED_MEMBER.getMsg());
     }
 
     @ExceptionHandler(LogInException.class)

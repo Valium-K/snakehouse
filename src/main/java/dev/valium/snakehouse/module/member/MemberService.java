@@ -1,5 +1,6 @@
 package dev.valium.snakehouse.module.member;
 
+import dev.valium.snakehouse.module.member.exception.DuplicatedMemberException;
 import dev.valium.snakehouse.module.member.exception.NoSuchMemberException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,10 @@ public class MemberService {
     }
 
     public Member saveMember(Member member) {
+        if(predicateByMemberId(member.getMemberId())) {
+            throw new DuplicatedMemberException("이미 존재하는 회원입니다.");
+        }
+
         return memberRepository.save(member);
     }
 
@@ -45,13 +50,32 @@ public class MemberService {
         return fromMember;
     }
 
+    /**
+     * Only for Oauth signed member
+     * @param memberId
+     * @param provider
+     * @return
+     */
     public Member findByMemberIdAndProvider(String memberId, String provider) {
         return memberRepository.findByMemberIdAndProvider(memberId, provider)
                 .orElseThrow(NoSuchMemberException::new);
     }
 
+    /**
+     * Only for Oauth signed member
+     * predicates member who has signed up through social media account
+     * @param memberId
+     * @param provider
+     * @return
+     */
     public boolean predicateByMemberIdAndProvider(String memberId, String provider) {
         Optional<Member> member = memberRepository.findByMemberIdAndProvider(memberId, provider);
+
+        return member.isPresent();
+    }
+
+    public boolean predicateByMemberId(String memberId) {
+        Optional<Member> member = memberRepository.findByMemberId(memberId);
 
         return member.isPresent();
     }

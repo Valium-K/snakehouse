@@ -2,14 +2,12 @@ package dev.valium.snakehouse.module.member;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.valium.snakehouse.module.base.BaseEntity;
-import dev.valium.snakehouse.module.leaderboard.Leaderboard;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Getter @Builder(access = AccessLevel.PRIVATE)
@@ -21,7 +19,7 @@ public class Member extends BaseEntity {
     @Column(name = "member_pk")
     private Long id;
 
-    @Column(nullable = false, unique = true, length = 30)
+    @Column(nullable = false, unique = true, length = 30, updatable = false)
     private String memberId;
 
     @Column(nullable = false, length = 100)
@@ -31,11 +29,16 @@ public class Member extends BaseEntity {
     @Column(nullable = true, length = 100)
     private String password;
 
-    @Column(length = 100)
+    @Column(length = 100, updatable = false)
     private String provider;
 
-    @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(
+            name = "member_roles",
+            joinColumns = @JoinColumn(name = "member_roles_id")
+    )
+    @Column(name = "roles")
     private List<String> roles = new ArrayList<>();
 
     public void setName(String name) {

@@ -18,11 +18,4 @@ public class MemberDetailsService implements UserDetailsService {
 
         return new MemberUser(member);
     }
-
-//    public MemberUser loadUserById(Long userPK) {
-//        Member member = memberRepository.findById(userPK)
-//                .orElseThrow(() -> new LogInException("ID가 존재하지 않거나 password가 일치하지 않습니다."));
-//
-//        return new MemberUser(member);
-//    }
 }
