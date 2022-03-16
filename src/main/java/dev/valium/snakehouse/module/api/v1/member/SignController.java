@@ -8,6 +8,7 @@ import dev.valium.snakehouse.module.member.Member;
 import dev.valium.snakehouse.module.member.MemberDetailsService;
 import dev.valium.snakehouse.module.member.MemberService;
 import dev.valium.snakehouse.module.member.MemberUser;
+import dev.valium.snakehouse.module.member.exception.DuplicatedMemberException;
 import dev.valium.snakehouse.module.member.exception.LogInException;
 import dev.valium.snakehouse.module.oauth.social.kakao.KakaoService;
 import dev.valium.snakehouse.module.oauth.social.common.Profile;
@@ -86,9 +87,8 @@ public class SignController {
 
         Profile profile = kakaoService.getProfile(accessToken);
 
-        // TODO 커스텀 예외로 빼기.
         if(memberService.predicateByMemberIdAndProvider(String.valueOf(profile.getId()), provider)) {
-            return responseService.getFailResult(-1, "이미 가입한 회원입니다.");
+            throw new DuplicatedMemberException("이미 가입한 회원입니다.");
         }
 
         memberService.saveMember(Member.createSocialMember(String.valueOf(profile.getId()), name, provider));

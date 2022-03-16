@@ -16,7 +16,6 @@ import org.springframework.web.client.RestTemplate;
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/oauth/login")
-@Profile("dev")
 public class KakaoController {
 
     private final Environment env;

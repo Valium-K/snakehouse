@@ -53,6 +53,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 // 관리자 기능
                 .antMatchers(HttpMethod.POST, "/*/members").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, "/*/members/*").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/*/members/*").hasRole("ADMIN")
 
                 // 그외 나머지 요청은 모두 인증된 회원만 접근 가능
                 .anyRequest().hasRole("USER")
@@ -65,7 +67,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler())
 
-                // jwt token 필터를 id/password 인증 필터 전에 넣는다
+                // jwt token 검증 필터를 id/password 인증 필터 전에 넣는다
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
     }

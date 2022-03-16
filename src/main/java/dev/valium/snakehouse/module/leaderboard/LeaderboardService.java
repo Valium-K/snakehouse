@@ -5,6 +5,7 @@ import dev.valium.snakehouse.module.game.score.GameScore;
 import dev.valium.snakehouse.module.game.score.exception.NoPlayHistoryException;
 import dev.valium.snakehouse.module.member.Member;
 import dev.valium.snakehouse.module.member.MemberService;
+import dev.valium.snakehouse.module.security.SecurityContextHolderHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,6 +44,15 @@ public class LeaderboardService {
 
     public Leaderboard saveMemberGameScore(String memberId, Title title, Long score) {
         Member member = memberService.findMember(memberId);
+        GameScore gameScore = GameScore.createGameScore(title, score);
+        Leaderboard leaderboard = Leaderboard.createLeaderboard(member, gameScore);
+
+        return leaderboardRepository.save(leaderboard);
+    }
+
+    public Leaderboard saveLeaderboard(Title title, Long score) {
+
+        Member member = SecurityContextHolderHelper.getMember();
         GameScore gameScore = GameScore.createGameScore(title, score);
         Leaderboard leaderboard = Leaderboard.createLeaderboard(member, gameScore);
 

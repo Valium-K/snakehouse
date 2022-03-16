@@ -8,9 +8,7 @@ import dev.valium.snakehouse.module.game.Title;
 import dev.valium.snakehouse.module.leaderboard.dto.HistoryDTO;
 import dev.valium.snakehouse.module.leaderboard.Leaderboard;
 import dev.valium.snakehouse.module.leaderboard.LeaderboardService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +23,9 @@ public class LeaderboardController {
     private final LeaderboardService leaderboardService;
     private final ResponseService responseService;
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
     @ApiOperation(value = "마지막 플레이 기록 조회", notes = "회원의 마지막 플레이 기록을 조회한다.")
     @GetMapping(value = "/members/{member-id}/history/latest")
     public SingleResult<HistoryDTO> findLatestHistoryBy(
@@ -35,6 +36,9 @@ public class LeaderboardController {
         return responseService.getSingleResult(HistoryDTO.createHistoryDTO(latestHistory));
     }
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
     @ApiOperation(value = "전체 플레이 기록 조회", notes = "회원의 전체 플레이 기록을 조회한다.")
     @GetMapping(value = "/members/{member-id}/history")
     public ListResult<HistoryDTO> findAllHistoryBy (
@@ -48,20 +52,42 @@ public class LeaderboardController {
         return responseService.getListResult(collect);
     }
 
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+//    })
+//    @ApiOperation(value = "회원의 게임 점수 입력", notes = "회원의 해당 게임 점수를 입력한다.")
+//    @PostMapping(value = "/members/{member-id}/game/{game-name}/score")
+//    public CommonResult saveMemberGameScore (
+//            @ApiParam(value = "회원 ID", required = true) @PathVariable(name = "member-id") String memberId,
+//            @ApiParam(value = "게임 타이틀", required = true) @PathVariable(name = "game-name") Title title,
+//            @ApiParam(value = "게임 점수", required = true) @RequestParam Long score) {
+//
+//        Title.checkTitle(title);
+//
+//        leaderboardService.saveMemberGameScore(memberId, title, score);
+//
+//        return responseService.getSuccessResult();
+//    }
+
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
     @ApiOperation(value = "회원의 게임 점수 입력", notes = "회원의 해당 게임 점수를 입력한다.")
-    @PostMapping(value = "/members/{member-id}/game/{game-name}/score/{score}")
+    @PostMapping(value = "/members/game/{game-name}/score")
     public CommonResult saveMemberGameScore (
-            @ApiParam(value = "회원 ID", required = true) @PathVariable(name = "id") String memberId,
             @ApiParam(value = "게임 타이틀", required = true) @PathVariable(name = "game-name") Title title,
-            @ApiParam(value = "게임 점수", required = true) @PathVariable(name = "score") Long score) {
+            @ApiParam(value = "게임 점수", required = true) @RequestParam Long score) {
 
         Title.checkTitle(title);
 
-        leaderboardService.saveMemberGameScore(memberId, title, score);
+        leaderboardService.saveLeaderboard(title, score);
 
         return responseService.getSuccessResult();
     }
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
     @ApiOperation(value = "전체 플레이 기록 삭제", notes = "회원의 전체 플레이 기록을 삭제한다.")
     @DeleteMapping(value = "/members/{id}/history")
     public CommonResult deleteAllHistory (

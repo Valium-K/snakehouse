@@ -22,7 +22,6 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-@Profile("dev")
 public class JwtTokenProvider {
 
     @Value("spring.jwt.secret")
@@ -81,9 +80,4 @@ public class JwtTokenProvider {
             return false;
         }
     }
-
-
-
-
-
 }
