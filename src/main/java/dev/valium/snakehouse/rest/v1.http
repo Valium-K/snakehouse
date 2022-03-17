@@ -2,4 +2,11 @@
 
 # GET http://localhost:8080/v1/members
 
-GET http://localhost:8080/v1/member?id=1
+# curl -X DELETE --header 'Accept: text/html' --header 'X-AUTH-TOKEN: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyMTYxMTE3MjI1Iiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTY0NzUwOTY2MiwiZXhwIjoxNjQ3NTEzMjYyfQ.UuxUZrVTzdactNVQMafaXww9YulX5mSJU3u_sLBm1dQ' 'http://localhost:8080/v1/member'
+DELETE http://localhost:8080/v1/member
+Accept: text/html
+X-AUTH-TOKEN: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyMTYxMTE3MjI1Iiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTY0NzUwOTY2MiwiZXhwIjoxNjQ3NTEzMjYyfQ.UuxUZrVTzdactNVQMafaXww9YulX5mSJU3u_sLBm1dQ
+
+###
+
+
