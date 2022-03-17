@@ -32,9 +32,9 @@ public class MemberController {
             @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ApiOperation(value = "회원 조회", notes = "회원 Id에 해당하는 정보를 조회한다.")
-    @GetMapping(value = "/members/{member-id}")
+    @GetMapping(value = "/members/{id}")
     public SingleResult<MemberDTO> findMember(
-            @ApiParam(value = "회원 ID", required = true) @PathVariable(name = "member-id") String memberId) {
+            @ApiParam(value = "회원 ID", required = true) @PathVariable(name = "id") String memberId) {
         Member member = memberService.findMember(memberId);
         MemberDTO memberDTO = MemberDTO.createMemberDTO(member);
 
@@ -93,9 +93,9 @@ public class MemberController {
             @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ApiOperation(value = "회원 수정", notes = "ID에 해당하는 회원정보를 수정한다.")
-    @PutMapping(value = "/members/{member-id}")
+    @PutMapping(value = "/members/{id}")
     public SingleResult<MemberDTO> modifyMember(
-            @ApiParam(value = "회원 ID", required = true) @PathVariable(name = "member-id") String memberId,
+            @ApiParam(value = "회원 ID", required = true) @PathVariable(name = "id") String memberId,
             @ApiParam(value = "회원 이름", required = false) @RequestParam String name,
             @ApiParam(value = "회원 비밀번호", required = false) @RequestParam String password) {
 
@@ -124,9 +124,9 @@ public class MemberController {
             @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ApiOperation(value = "회원 삭제", notes = "ID에 해당하는 회원을 삭제한다.")
-    @DeleteMapping(value = "/members/{member-id}")
+    @DeleteMapping(value = "/members/{id}")
     public CommonResult deleteMember(
-            @ApiParam(value = "회원 ID", required = true) @PathVariable(name = "member-id") String memberId) {
+            @ApiParam(value = "회원 ID", required = true) @PathVariable(name = "id") String memberId) {
 
         Member member = memberService.findMember(memberId);
         memberService.deleteMember(member);

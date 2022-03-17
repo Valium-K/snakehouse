@@ -2,6 +2,7 @@ package dev.valium.snakehouse.module.member;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.valium.snakehouse.module.base.BaseEntity;
+import dev.valium.snakehouse.module.leaderboard.Leaderboard;
 import lombok.*;
 
 import javax.persistence.*;
@@ -31,6 +32,9 @@ public class Member extends BaseEntity {
 
     @Column(length = 100, updatable = false)
     private String provider;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    List<Leaderboard> leaderboards = new ArrayList<>();
 
     @Builder.Default
     @ElementCollection(fetch = FetchType.LAZY)
