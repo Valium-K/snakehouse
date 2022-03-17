@@ -29,15 +29,17 @@ public class LeaderboardService {
     }
 
     @Transactional(readOnly = true)
-    public List<Leaderboard> findAllHistory(String memberId) {
+    public List<Leaderboard> findAllHistory(String memberId, String orderBy) {
         // member가 있는지 먼저 찾는다. - 추가쿼리
         Member member = memberService.findMember(memberId);
 
-        return leaderboardRepository.findAllByMemberId(member.getId());
+        return ("desc".equals(orderBy))
+                ? leaderboardRepository.findAllByMemberIdOrderByCreatedDateDesc(member.getId())
+                : leaderboardRepository.findAllByMemberIdOrderByCreatedDate(member.getId());
     }
 
     public void deleteAllHistory(String memberId) {
-        List<Leaderboard> allHistory = findAllHistory(memberId);
+        List<Leaderboard> allHistory = findAllHistory(memberId, "It doesn't matter");
 
         leaderboardRepository.deleteAllHistory(allHistory);
     }

@@ -27,9 +27,9 @@ public class LeaderboardController {
             @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ApiOperation(value = "마지막 플레이 기록 조회", notes = "회원의 마지막 플레이 기록을 조회한다.")
-    @GetMapping(value = "/members/{member-id}/history/latest")
+    @GetMapping(value = "/members/{id}/history/latest")
     public SingleResult<HistoryDTO> findLatestHistoryBy(
-            @ApiParam(value = "회원 ID", required = true) @PathVariable(name = "member-id") String memberId) {
+            @ApiParam(value = "회원 ID", required = true) @PathVariable(name = "id") String memberId) {
 
         Leaderboard latestHistory = leaderboardService.findLatestHistory(memberId);
 
@@ -40,11 +40,12 @@ public class LeaderboardController {
             @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ApiOperation(value = "전체 플레이 기록 조회", notes = "회원의 전체 플레이 기록을 조회한다.")
-    @GetMapping(value = "/members/{member-id}/history")
+    @GetMapping(value = "/members/{id}/history")
     public ListResult<HistoryDTO> findAllHistoryBy (
-            @ApiParam(value = "회원 ID", required = true) @PathVariable(name = "member-id") String memberId) {
+            @ApiParam(value = "회원 ID", required = true) @PathVariable(name = "id") String memberId,
+            @ApiParam(value = "정렬", allowableValues = "desc, asc") @RequestParam(name = "order", required = false) String orderBy) {
 
-        List<Leaderboard> allHistory = leaderboardService.findAllHistory(memberId);
+        List<Leaderboard> allHistory = leaderboardService.findAllHistory(memberId, orderBy);
         List<HistoryDTO> collect = allHistory.stream()
                 .map(HistoryDTO::createHistoryDTO)
                 .collect(Collectors.toList());
@@ -52,31 +53,14 @@ public class LeaderboardController {
         return responseService.getListResult(collect);
     }
 
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
-//    })
-//    @ApiOperation(value = "회원의 게임 점수 입력", notes = "회원의 해당 게임 점수를 입력한다.")
-//    @PostMapping(value = "/members/{member-id}/game/{game-name}/score")
-//    public CommonResult saveMemberGameScore (
-//            @ApiParam(value = "회원 ID", required = true) @PathVariable(name = "member-id") String memberId,
-//            @ApiParam(value = "게임 타이틀", required = true) @PathVariable(name = "game-name") Title title,
-//            @ApiParam(value = "게임 점수", required = true) @RequestParam Long score) {
-//
-//        Title.checkTitle(title);
-//
-//        leaderboardService.saveMemberGameScore(memberId, title, score);
-//
-//        return responseService.getSuccessResult();
-//    }
-
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ApiOperation(value = "회원의 게임 점수 입력", notes = "회원의 해당 게임 점수를 입력한다.")
-    @PostMapping(value = "/members/game/{game-name}/score")
+    @PostMapping(value = "/members/game/{title}/score/{score}")
     public CommonResult saveMemberGameScore (
-            @ApiParam(value = "게임 타이틀", required = true) @PathVariable(name = "game-name") Title title,
-            @ApiParam(value = "게임 점수", required = true) @RequestParam Long score) {
+            @ApiParam(value = "게임 타이틀", required = true) @PathVariable(name = "title") Title title,
+            @ApiParam(value = "게임 점수", required = true) @PathVariable(name = "score") Long score) {
 
         Title.checkTitle(title);
 

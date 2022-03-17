@@ -22,7 +22,7 @@ public class Leaderboard extends BaseEntity {
     @JoinColumn(name = "member_fk")
     private Member member;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "game_score_fk")
     private GameScore gameScore;
 
