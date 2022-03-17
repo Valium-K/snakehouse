@@ -44,12 +44,14 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
                 .and()
-                // 다음 리퀘스트에 대한 사용권한 체크
-                .authorizeRequests()
-                // 가입 및 인증 주소는 누구나 접근가능
-                .antMatchers("/*/sign-in", "/*/sign-in/**", "/*/sign-up", "/*/sign-up/**", "/oauth/**").permitAll()
-                // 해당 경로 GET요청은 누구나 가능
-                .antMatchers(HttpMethod.GET, "/hello-api/**", "/robots.txt", "/exception/**").permitAll()
+                .authorizeRequests() // 리퀘스트에 대한 사용권한 체크
+                // 모든 요청 허용 리스트
+                .antMatchers(
+                        "/*/sign-in/**", "/*/sign-up", "/*/sign-up/**",
+                        "/oauth/**",
+                        "/exception/**").permitAll()
+                // GET 요청 허용 리스트
+                .antMatchers(HttpMethod.GET, "/hello-api/**", "/robots.txt").permitAll()
 
                 // 관리자 기능
                 .antMatchers(HttpMethod.POST, "/*/members").hasRole("ADMIN")
