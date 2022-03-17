@@ -38,9 +38,9 @@ public class GameScoreController {
             @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ApiOperation(value = "게임 최고점수 조회", notes = "해당 게임의 최고점수를 조회한다.")
-    @GetMapping(value = "/game/{game-name}/high-score")
+    @GetMapping(value = "/game/{title}/high-score")
     public SingleResult<Long> findHighScore(
-            @ApiParam(value = "게임 타이틀", required = true) @PathVariable(name = "game-name") Title title) {
+            @ApiParam(value = "게임 타이틀", required = true) @PathVariable(name = "title") Title title) {
 
         Title.checkTitle(title);
 
@@ -51,14 +51,15 @@ public class GameScoreController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
-    @ApiOperation(value = "게임 전체 점수 조회", notes = "해당 게임의 전체 점수를 내림차순으로 조회한다.")
-    @GetMapping(value = "/game/{game-name}/score")
+    @ApiOperation(value = "게임 전체 점수 조회", notes = "해당 게임의 전체 점수를 조회한다.")
+    @GetMapping(value = "/game/{title}/score")
     public ListResult<Long> findAllScore(
-            @ApiParam(value = "게임 타이틀", required = true) @PathVariable(name = "game-name") Title title) {
+            @ApiParam(value = "게임 타이틀", required = true) @PathVariable(name = "title") Title title,
+            @ApiParam(value = "정렬", allowableValues = "desc, asc") @RequestParam(name = "order", required = false) String orderBy) {
 
         Title.checkTitle(title);
 
-        List<GameScore> allScore = gameScoreService.findAllScoreOf(title);
+        List<GameScore> allScore = gameScoreService.findAllScoreOf(title, orderBy);
         List<Long> collect = allScore.stream()
                 .map(GameScore::getScore)
                 .collect(Collectors.toList());
@@ -71,10 +72,10 @@ public class GameScoreController {
             @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ApiOperation(value = "게임 점수 입력", notes = "해당 게임 점수를 등록한다.")
-    @PostMapping(value = "/game/{game-name}/score")
+    @PostMapping(value = "/game/{title}/score/{score}")
     public SingleResult<GameScoreDTO> saveScore(
-            @ApiParam(value = "게임 타이틀", required = true) @PathVariable(name = "game-name") Title title,
-            @ApiParam(value = "게임 점수", required = true) @RequestParam Long score) {
+            @ApiParam(value = "게임 타이틀", required = true) @PathVariable(name = "title") Title title,
+            @ApiParam(value = "게임 점수", required = true) @PathVariable(name = "score") Long score) {
 
         Title.checkTitle(title);
 

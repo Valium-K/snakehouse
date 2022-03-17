@@ -12,4 +12,5 @@ public interface GameScoreRepository extends JpaRepository<GameScore, Long> {
 
     Optional<GameScore> findFirstByTitleOrderByScoreDesc(Title title);
     List<GameScore> findAllByTitleOrderByScoreDesc(Title title);
+    List<GameScore> findAllByTitleOrderByScore(Title title);
 }

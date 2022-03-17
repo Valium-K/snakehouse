@@ -22,8 +22,12 @@ public class GameScoreService {
     }
 
     @Transactional(readOnly = true)
-    public List<GameScore> findAllScoreOf(Title title) {
-        return gameScoreRepository.findAllByTitleOrderByScoreDesc(title);
+    public List<GameScore> findAllScoreOf(Title title, String orderBy) {
+
+        return ("desc".equals(orderBy))
+                ? gameScoreRepository.findAllByTitleOrderByScoreDesc(title)
+                : gameScoreRepository.findAllByTitleOrderByScore(title);
+
     }
 
     public GameScore saveGameScore(Title title, Long score) {

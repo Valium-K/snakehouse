@@ -2,10 +2,12 @@ package dev.valium.snakehouse.module.game.score;
 
 import dev.valium.snakehouse.module.base.BaseEntity;
 import dev.valium.snakehouse.module.game.Title;
+import dev.valium.snakehouse.module.leaderboard.Leaderboard;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter @Builder(access = AccessLevel.PRIVATE)
@@ -24,6 +26,9 @@ public class GameScore extends BaseEntity {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Title title;
+
+    @OneToMany(mappedBy = "gameScore", cascade = CascadeType.REMOVE)
+    private List<Leaderboard> leaderboards;
 
     public void setScore(Long score) {
         this.score = score;
