@@ -51,7 +51,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/oauth/**",
                         "/exception/**").permitAll()
                 // GET 요청 허용 리스트
-                .antMatchers(HttpMethod.GET, "/hello-api/**", "/robots.txt").permitAll()
+                .antMatchers(HttpMethod.GET,
+                        "/hello-api/**",
+                        "/robots.txt",
+                        "/redis").permitAll()
 
                 // 관리자 기능
                 .antMatchers(HttpMethod.POST, "/*/members").hasRole("ADMIN")

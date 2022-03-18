@@ -1,4 +1,4 @@
-package dev.valium.snakehouse.infra;
+package dev.valium.snakehouse.infra.spring;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
