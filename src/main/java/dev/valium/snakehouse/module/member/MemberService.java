@@ -1,8 +1,12 @@
 package dev.valium.snakehouse.module.member;
 
+import dev.valium.snakehouse.infra.redis.CacheKey;
 import dev.valium.snakehouse.module.member.exception.DuplicatedMemberException;
 import dev.valium.snakehouse.module.member.exception.NoSuchMemberException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +20,7 @@ import java.util.Optional;
 public class MemberService {
     private final MemberRepository memberRepository;
 
+    // @Cacheable(value = CacheKey.MEMBER, key = "#memberId", unless = "#result == null")
     @Transactional(readOnly = true)
     public Member findMember(String memberId) {
         return memberRepository.findByMemberId(memberId)
@@ -35,10 +40,12 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
+    //@CacheEvict(value = CacheKey.MEMBER, key = "#member.memberId")
     public void deleteMember(Member member) {
         memberRepository.delete(member);
     }
 
+    //@CachePut(value = CacheKey.MEMBER, key = "#fromMember.memberId")
     public Member modifyMember(Member fromMember, Member toMember) {
         if (fromMember.getName() != null && !fromMember.getName().equals(toMember.getName())) {
             fromMember.setName(toMember.getName());

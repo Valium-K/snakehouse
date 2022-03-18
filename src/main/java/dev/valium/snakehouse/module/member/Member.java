@@ -4,17 +4,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.valium.snakehouse.module.base.BaseEntity;
 import dev.valium.snakehouse.module.leaderboard.Leaderboard;
 import lombok.*;
+import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 @Entity
-@Getter @Builder(access = AccessLevel.PRIVATE)
+@Getter @Builder(access = AccessLevel.PUBLIC)
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member extends BaseEntity {
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
+// Redis 사용시 lazy 로딩은 캐싱에러로 이어진다.
+// member 클래스는 다른 클래스에서 lazy 로딩 하므로 해당 설정을 추가한다.
+@Proxy(lazy = false)
+public class Member extends BaseEntity implements Serializable {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_pk")
