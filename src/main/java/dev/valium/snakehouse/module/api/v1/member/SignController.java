@@ -10,8 +10,8 @@ import dev.valium.snakehouse.module.member.MemberService;
 import dev.valium.snakehouse.module.member.MemberUser;
 import dev.valium.snakehouse.module.member.exception.DuplicatedMemberException;
 import dev.valium.snakehouse.module.member.exception.LogInException;
-import dev.valium.snakehouse.module.oauth.social.kakao.KakaoService;
 import dev.valium.snakehouse.module.oauth.social.common.Profile;
+import dev.valium.snakehouse.module.oauth.social.kakao.KakaoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -40,7 +40,8 @@ public class SignController {
             @ApiParam(value = "회원 ID", required = true) @RequestParam String memberId,
             @ApiParam(value = "회원 비밀번호", required = true) @RequestParam String password) {
 
-        MemberUser memberUser = memberDetailsService.loadUserByUsername(memberId);
+        // MemberUser memberUser = memberDetailsService.loadUserByUsername(memberId);
+        MemberUser memberUser = new MemberUser(memberDetailsService.loadMemberByMemberId(memberId));
 
         if(!passwordEncoder.matches(password, memberUser.getPassword())) {
             throw new LogInException("ID가 존재하지 않거나 password가 일치하지 않습니다.");
@@ -72,9 +73,11 @@ public class SignController {
             @ApiParam(value = "회원 비밀번호", required = true) @RequestParam String password,
             @ApiParam(value = "회원 이름", required = true) @RequestParam String name) {
 
-        if(password != null && !password.equals("")) {
-            memberService.saveMember(Member.createMember(memberId, passwordEncoder.encode(password), name));
+        if(password == null || password.equals("")) {
+            return responseService.getFailResult(0, "패스워드가 공백입니다.");
         }
+
+        memberService.saveMember(Member.createMember(memberId, passwordEncoder.encode(password), name));
 
         return responseService.getSuccessResult();
     }
