@@ -1,5 +1,6 @@
 package dev.valium.snakehouse.module.leaderboard;
 
+import dev.valium.snakehouse.module.member.Member;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,4 +21,5 @@ public interface LeaderboardRepository extends JpaRepository<Leaderboard, Long> 
     List<Leaderboard> findAllByMemberIdOrderByCreatedDate(Long memberId);
     @Query("delete from Leaderboard as lb where lb in :lbs")
     void deleteAllHistory(@Param("lbs") List<Leaderboard> leaderboards);
+    void deleteByMember(Member member);
 }

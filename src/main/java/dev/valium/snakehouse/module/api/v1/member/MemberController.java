@@ -1,6 +1,7 @@
 package dev.valium.snakehouse.module.api.v1.member;
 
 
+import dev.valium.snakehouse.infra.security.CustomBCryptPasswordEncoder;
 import dev.valium.snakehouse.module.api.model.response.CommonResult;
 import dev.valium.snakehouse.module.api.model.response.ListResult;
 import dev.valium.snakehouse.module.api.model.response.ResponseService;
@@ -11,7 +12,6 @@ import dev.valium.snakehouse.module.member.dto.MemberDTO;
 import dev.valium.snakehouse.module.security.SecurityContextHolderHelper;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,7 +25,7 @@ public class MemberController {
 
     private final MemberService memberService;
     private final ResponseService responseService;
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final CustomBCryptPasswordEncoder passwordEncoder;
 
     /********************************** 조회 ***************************************/
     @ApiImplicitParams({
@@ -96,11 +96,11 @@ public class MemberController {
     @PutMapping(value = "/members/{id}")
     public SingleResult<MemberDTO> modifyMember(
             @ApiParam(value = "회원 ID", required = true) @PathVariable(name = "id") String memberId,
-            @ApiParam(value = "회원 이름", required = false) @RequestParam String name,
-            @ApiParam(value = "회원 비밀번호", required = false) @RequestParam String password) {
+            @ApiParam(value = "회원 이름") @RequestParam(required = false) String name,
+            @ApiParam(value = "회원 비밀번호") @RequestParam(required = false) String password) {
 
         Member member = memberService.findMember(memberId);
-        Member modifiedMember = memberService.modifyMember(member, Member.createMember(memberId, passwordEncoder.encode(password), name));
+        Member modifiedMember = memberService.modifyMember(member, Member.createMember(memberId, passwordEncoder.nullableEncode(password), name));
 
         return responseService.getSingleResult(MemberDTO.createMemberDTO(modifiedMember));
     }
@@ -111,10 +111,11 @@ public class MemberController {
     @ApiOperation(value = "회원 수정", notes = "토큰에 해당하는 회원 정보를 수정한다.")
     @PutMapping(value = "/member")
     public SingleResult<MemberDTO> modifyMember(
-            @ApiParam(value = "회원 이름", required = false) @RequestParam String name,
-            @ApiParam(value = "회원 비밀번호", required = false) @RequestParam String password) {
+            @ApiParam(value = "회원 이름") @RequestParam(required = false) String name,
+            @ApiParam(value = "회원 비밀번호") @RequestParam(required = false) String password) {
         Member member = SecurityContextHolderHelper.getMember();
-        Member modifiedMember = memberService.modifyMember(member, Member.createMember(member.getMemberId(), passwordEncoder.encode(password), name));
+
+        Member modifiedMember = memberService.modifyMember(member, Member.createMember(member.getMemberId(), passwordEncoder.nullableEncode(password), name));
 
         return responseService.getSingleResult(MemberDTO.createMemberDTO(modifiedMember));
     }

@@ -1,6 +1,7 @@
 package dev.valium.snakehouse.infra.jwt;
 
 import dev.valium.snakehouse.module.member.MemberDetailsService;
+import dev.valium.snakehouse.module.member.MemberUser;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -49,7 +50,9 @@ public class JwtTokenProvider {
 
     // Jwt 토큰으로 인증 정보를 조회
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = memberDetailsService.loadUserByUsername(getUserId(token));
+        // UserDetails userDetails = memberDetailsService.loadUserByUsername(getUserId(token));
+
+        UserDetails userDetails = new MemberUser(memberDetailsService.loadMemberByMemberId(getUserId(token)));
 
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }

@@ -1,15 +1,16 @@
 package dev.valium.snakehouse.module.member;
 
 import dev.valium.snakehouse.infra.redis.CacheKey;
+import dev.valium.snakehouse.module.leaderboard.LeaderboardRepository;
 import dev.valium.snakehouse.module.member.exception.DuplicatedMemberException;
 import dev.valium.snakehouse.module.member.exception.NoSuchMemberException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,8 +20,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final LeaderboardRepository leaderboardRepository;
+    private final EntityManager em;
 
-    // @Cacheable(value = CacheKey.MEMBER, key = "#memberId", unless = "#result == null")
     @Transactional(readOnly = true)
     public Member findMember(String memberId) {
         return memberRepository.findByMemberId(memberId)
@@ -40,21 +42,38 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
-    //@CacheEvict(value = CacheKey.MEMBER, key = "#member.memberId")
+    @CacheEvict(value = CacheKey.MEMBER, key = "#member.memberId")
     public void deleteMember(Member member) {
-        memberRepository.delete(member);
+        // leaderboard 삭제 jpa in query
+        leaderboardRepository.deleteByMember(member);
+
+        // member 삭제 쿼리
+        em.createQuery("delete from Member as m where m.memberId = :memberId")
+                .setParameter("memberId", member.getMemberId())
+                .executeUpdate();
     }
 
-    //@CachePut(value = CacheKey.MEMBER, key = "#fromMember.memberId")
-    public Member modifyMember(Member fromMember, Member toMember) {
-        if (fromMember.getName() != null && !fromMember.getName().equals(toMember.getName())) {
-            fromMember.setName(toMember.getName());
+    @CachePut(value = CacheKey.MEMBER, key = "#toUpdateMember.memberId")
+    public Member modifyMember(Member toUpdateMember, Member propsMember) {
+
+        if (propsMember.getName() != null) {
+            toUpdateMember.setName(propsMember.getName());
         }
-        if (fromMember.getPassword() != null && !fromMember.getPassword().equals(toMember.getPassword())) {
-            fromMember.setPassword(toMember.getPassword());
+        if (propsMember.getPassword() != null) {
+            toUpdateMember.setPassword(propsMember.getPassword());
         }
 
-        return fromMember;
+        // OSIV, 영속성 컨테이너 앞 redis 프록시의 이유로 컨트롤러에서 넘어오는 entity는 현재 detached 이다.
+        // 이 상황에서 변경감지를 사용하려면 select 쿼리가 추가로 필요하므로 그냥 ORM 특성을 조금 무시하고 JPQL을 날렸다.
+        em.createQuery("update Member as m " +
+                                "set m.name = :name, m.password = :password " +
+                                "where m.id = :id")
+                .setParameter("name", toUpdateMember.getName())
+                .setParameter("password", toUpdateMember.getPassword())
+                .setParameter("id", toUpdateMember.getId())
+                .executeUpdate();
+
+        return toUpdateMember;
     }
 
     /**

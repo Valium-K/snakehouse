@@ -38,9 +38,6 @@ public class Member extends BaseEntity implements Serializable {
     @Column(length = 100, updatable = false)
     private String provider;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    List<Leaderboard> leaderboards = new ArrayList<>();
-
     @Builder.Default
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(
