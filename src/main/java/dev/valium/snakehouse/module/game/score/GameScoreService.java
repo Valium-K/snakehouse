@@ -17,7 +17,7 @@ public class GameScoreService {
 
     @Transactional(readOnly = true)
     public GameScore findHighScoreOf(Title title) {
-        return gameScoreRepository.findFirstByTitleOrderByScoreDesc(title)
+        return gameScoreRepository.findFirstByTitleOrderByScoreDescCreatedDateAsc(title)
                 .orElse(GameScore.createGameScore(null, 0L));
     }
 

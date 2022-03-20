@@ -1,8 +1,8 @@
 package dev.valium.snakehouse.module.leaderboard;
 
-import dev.valium.snakehouse.module.member.Member;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +19,8 @@ public interface LeaderboardRepository extends JpaRepository<Leaderboard, Long> 
     List<Leaderboard> findAllByMemberIdOrderByCreatedDateDesc(Long memberId);
     @EntityGraph(attributePaths = {"gameScore"}, type = EntityGraph.EntityGraphType.LOAD)
     List<Leaderboard> findAllByMemberIdOrderByCreatedDate(Long memberId);
-    @Query("delete from Leaderboard as lb where lb in :lbs")
+    @Modifying @Query("delete from Leaderboard as lb where lb in :lbs")
     void deleteAllHistory(@Param("lbs") List<Leaderboard> leaderboards);
-    void deleteByMember(Member member);
+    @Query("select lb from Leaderboard as lb join fetch lb.member as m where m.memberId = :memberId")
+    List<Leaderboard> findAllByMemberId(@Param("memberId") String memberId);
 }

@@ -1,16 +1,19 @@
 package dev.valium.snakehouse.module.member;
 
 import dev.valium.snakehouse.infra.redis.CacheKey;
+import dev.valium.snakehouse.module.leaderboard.Leaderboard;
 import dev.valium.snakehouse.module.leaderboard.LeaderboardRepository;
 import dev.valium.snakehouse.module.member.exception.DuplicatedMemberException;
 import dev.valium.snakehouse.module.member.exception.NoSuchMemberException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +25,9 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final LeaderboardRepository leaderboardRepository;
     private final EntityManager em;
+
+    @Value("${spring.jpa.properties.hibernate.default_batch_fetch_size}")
+    private Long BATCH_SIZE;
 
     @Transactional(readOnly = true)
     public Member findMember(String memberId) {
@@ -42,15 +48,20 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
-    @CacheEvict(value = CacheKey.MEMBER, key = "#member.memberId")
-    public void deleteMember(Member member) {
-        // leaderboard 삭제 jpa in query
-        leaderboardRepository.deleteByMember(member);
+    @CacheEvict(value = CacheKey.MEMBER, key = "#memberId")
+    public void deleteMemberByMemberId(String memberId) {
 
-        // member 삭제 쿼리
-        em.createQuery("delete from Member as m where m.memberId = :memberId")
-                .setParameter("memberId", member.getMemberId())
-                .executeUpdate();
+        // leaderboard 삭제 jpa in query
+        List<Leaderboard> lbs = leaderboardRepository.findAllByMemberId(memberId);
+
+        if(!lbs.isEmpty()) {
+            leaderboardRepository.deleteAllHistory(lbs);
+            memberRepository.delete(lbs.get(0).getMember());
+        }
+        else {
+            Member member = findMember(memberId);
+            memberRepository.delete(member);
+        }
     }
 
     @CachePut(value = CacheKey.MEMBER, key = "#toUpdateMember.memberId")

@@ -129,8 +129,9 @@ public class MemberController {
     public CommonResult deleteMember(
             @ApiParam(value = "회원 ID", required = true) @PathVariable(name = "id") String memberId) {
 
-        Member member = memberService.findMember(memberId);
-        memberService.deleteMember(member);
+        // memberId 존재 확인
+        memberService.findMember(memberId);
+        memberService.deleteMemberByMemberId(memberId);
 
         return responseService.getSuccessResult();
     }
@@ -143,7 +144,7 @@ public class MemberController {
     public CommonResult deleteMember() {
 
         Member member = SecurityContextHolderHelper.getMember();
-        memberService.deleteMember(member);
+        memberService.deleteMemberByMemberId(member.getMemberId());
 
         return responseService.getSuccessResult();
     }

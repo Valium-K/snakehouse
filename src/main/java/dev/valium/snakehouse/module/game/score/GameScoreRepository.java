@@ -10,7 +10,7 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public interface GameScoreRepository extends JpaRepository<GameScore, Long> {
 
-    Optional<GameScore> findFirstByTitleOrderByScoreDesc(Title title);
+    Optional<GameScore> findFirstByTitleOrderByScoreDescCreatedDateAsc(Title title);
     List<GameScore> findAllByTitleOrderByScoreDesc(Title title);
     List<GameScore> findAllByTitleOrderByScore(Title title);
 }
