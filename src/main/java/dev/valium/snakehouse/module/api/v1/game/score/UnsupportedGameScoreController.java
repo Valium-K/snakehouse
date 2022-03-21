@@ -1,4 +1,4 @@
-package dev.valium.snakehouse.module.api.v1.member;
+package dev.valium.snakehouse.module.api.v1.game.score;
 
 import dev.valium.snakehouse.module.api.model.response.CommonResult;
 import dev.valium.snakehouse.module.api.model.response.ResponseService;
@@ -7,87 +7,88 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
-@Api(tags = {"4. Sign"})
+@Api(tags = {"2. GameScore"})
 @RestController
 @RequestMapping(value = "/v1")
-public class UnsupportedSignController extends UnsupportedController {
+public class UnsupportedGameScoreController extends UnsupportedController {
 
-    public UnsupportedSignController(ResponseService responseService) {
+    public UnsupportedGameScoreController(ResponseService responseService) {
         super(responseService);
+    }
+
+    /********************************** 조회 ***************************************/
+    @ApiOperation(value = value, notes = notes)
+    @GetMapping(value = "/game/{title}/score/{score}")
+    public CommonResult getGameScore() {
+        return unSupportedMethod();
     }
 
     /********************************** 입력 ***************************************/
     @ApiOperation(value = value, notes = notes)
-    @GetMapping(value = "/sign-in")
-    public CommonResult getSignIn() {
+    @PostMapping(value = "/game")
+    public CommonResult postGame() {
         return unSupportedMethod();
     }
 
     @ApiOperation(value = value, notes = notes)
-    @GetMapping(value = "/sign-up")
-    public CommonResult getSignup() {
+    @PostMapping(value = "/game/{title}/high-score")
+    public CommonResult postHighScore() {
         return unSupportedMethod();
     }
 
     @ApiOperation(value = value, notes = notes)
-    @GetMapping(value = "/sign-in/{provider}")
-    public CommonResult getSignInProvider() {
-        return unSupportedMethod();
-    }
-
-    @ApiOperation(value = value, notes = notes)
-    @GetMapping(value = "/sign-up/{provider}")
-    public CommonResult getSignupProvider() {
+    @PostMapping(value = "/game/{title}/score")
+    public CommonResult postScore() {
         return unSupportedMethod();
     }
 
     /********************************** 수정 ***************************************/
     @ApiOperation(value = value, notes = notes)
-    @PutMapping(value = "/sign-in")
-    public CommonResult putSignIn() {
+    @PutMapping(value = "/game")
+    public CommonResult putGame() {
         return unSupportedMethod();
     }
 
     @ApiOperation(value = value, notes = notes)
-    @PutMapping(value = "/sign-up")
-    public CommonResult putSignup() {
+    @PutMapping(value = "/game/{title}/high-score")
+    public CommonResult putHighScore() {
         return unSupportedMethod();
     }
 
     @ApiOperation(value = value, notes = notes)
-    @PutMapping(value = "/sign-in/{provider}")
-    public CommonResult putSignInProvider() {
+    @PutMapping(value = "/game/{title}/score")
+    public CommonResult putScore() {
         return unSupportedMethod();
     }
 
     @ApiOperation(value = value, notes = notes)
-    @PutMapping(value = "/sign-up/{provider}")
-    public CommonResult putSignupProvider() {
+    @PutMapping(value = "/game/{title}/score/{score}")
+    public CommonResult putGameScore() {
         return unSupportedMethod();
     }
 
     /********************************** 삭제 ***************************************/
     @ApiOperation(value = value, notes = notes)
-    @DeleteMapping(value = "/sign-in")
-    public CommonResult deleteSignIn() {
+    @DeleteMapping(value = "/game")
+    public CommonResult deleteGame() {
         return unSupportedMethod();
     }
 
     @ApiOperation(value = value, notes = notes)
-    @DeleteMapping(value = "/sign-up")
-    public CommonResult deleteSignup() {
+    @DeleteMapping(value = "/game/{title}/high-score")
+    public CommonResult deleteHighScore() {
         return unSupportedMethod();
     }
 
     @ApiOperation(value = value, notes = notes)
-    @DeleteMapping(value = "/sign-in/{provider}")
-    public CommonResult deleteSignInProvider() {
+    @DeleteMapping(value = "/game/{title}/score")
+    public CommonResult deleteScore() {
         return unSupportedMethod();
     }
 
     @ApiOperation(value = value, notes = notes)
-    @DeleteMapping(value = "/sign-up/{provider}")
-    public CommonResult deleteSignupProvider() {
+    @DeleteMapping(value = "/game/{title}/score/{score}")
+    public CommonResult deleteGameScore() {
         return unSupportedMethod();
     }
 }

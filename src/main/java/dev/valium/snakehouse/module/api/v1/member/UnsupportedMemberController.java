@@ -20,20 +20,20 @@ public class UnsupportedMemberController extends UnsupportedController {
     }
 
     /********************************** 입력 ***************************************/
-    @ApiOperation(value = "제공 되지 않습니다.", notes = "제공 되지 않습니다.")
+    @ApiOperation(value = value, notes = notes)
     @PostMapping(value = "/member")
     public CommonResult postMember() {
         return unSupportedMethod();
     }
 
-    @ApiOperation(value = "제공 되지 않습니다.", notes = "제공 되지 않습니다.")
+    @ApiOperation(value = value, notes = notes)
     @PostMapping(value = "/members/{id}")
     public CommonResult postMembersId() {
         return unSupportedMethod();
     }
 
     /********************************** 수정 ***************************************/
-    @ApiOperation(value = "제공 되지 않습니다.", notes = "제공 되지 않습니다.")
+    @ApiOperation(value = value, notes = notes)
     @PutMapping(value = "/members")
     public CommonResult putMembers() {
         return unSupportedMethod();
