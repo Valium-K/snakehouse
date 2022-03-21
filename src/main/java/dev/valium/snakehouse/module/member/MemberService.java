@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -87,6 +86,12 @@ public class MemberService {
         return toUpdateMember;
     }
 
+    @CacheEvict(value = CacheKey.MEMBER, key = "#memberId")
+    public void deleteAllMembers(String memberId) {
+        leaderboardRepository.deleteAll();
+        memberRepository.deleteAll();
+    }
+
     /**
      * Only for Oauth signed member
      * @param memberId
@@ -110,7 +115,6 @@ public class MemberService {
 
         return member.isPresent();
     }
-
     public boolean predicateByMemberId(String memberId) {
         Optional<Member> member = memberRepository.findByMemberId(memberId);
 
