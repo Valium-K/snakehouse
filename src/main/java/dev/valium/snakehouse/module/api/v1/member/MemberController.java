@@ -148,4 +148,17 @@ public class MemberController {
 
         return responseService.getSuccessResult();
     }
+
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @ApiOperation(value = "모든 회원 삭제", notes = "모든 회원을 삭제한다.")
+    @DeleteMapping(value = "/members")
+    public CommonResult deleteMembers() {
+
+        Member member = SecurityContextHolderHelper.getMember();
+        memberService.deleteAllMembers(member.getMemberId());
+
+        return responseService.getSuccessResult();
+    }
 }
