@@ -34,6 +34,7 @@ public class SignController {
     private final PasswordEncoder passwordEncoder;
     private final KakaoService kakaoService;
 
+    /********************************** 입력 ***************************************/
     @ApiOperation(value = "로그인", notes = "이메일 회원 로그인을 한다.")
     @PostMapping(value = "/sign-in")
     public SingleResult<String> signIn(
