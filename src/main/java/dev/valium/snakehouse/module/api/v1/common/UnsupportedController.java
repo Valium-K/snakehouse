@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public abstract class UnsupportedController {
     private final ResponseService responseService;
+    public static final String value = "x";
+    public static final String notes = "제공 되지 않습니다.";
 
     protected CommonResult unSupportedMethod() {
         return responseService.getFailResult(0, "제공 되지 않습니다.");
