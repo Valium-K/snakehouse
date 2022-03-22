@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:300,400,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Noto Sans KR", "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    }
+  </style>
+</head>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js" integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2" crossorigin="anonymous"></script>
+<body class="bg-light">
+<div class="container">
+
+  <div class="py-5 text-center">
+    <p class="lead mt-4 mb-5">S n a k e H o u s e A P I</p>
+    <h2>login</h2>
+  </div>
+
+  <div class="row justify-content-center">
+    <form class="needs-validation col-sm-6" action="#" th:action="@{/v1/sign-in}" method="post" novalidate>
+
+      <div class="form-group mb-3">
+        <label for="memberId">회원 ID</label>
+        <input id="memberId" type="text" name="memberId" class="form-control"
+               placeholder="your ID" aria-describedby="idHelp" required>
+        <small id="idHelp" class="form-text text-muted">
+          가입할 때 사용한 ID를 입력하세요.
+        </small>
+        <small class="invalid-feedback">ID를 입력하세요.</small>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="password">패스워드</label>
+        <input id="password" type="password" name="password" class="form-control"
+               placeholder="password" aria-describedby="passwordHelp" required>
+        <small id="passwordHelp" class="form-text text-muted">
+          가입할 때 사용한 password를 입력하세요.
+        </small>
+        <small class="invalid-feedback">패스워드를 입력하세요.</small>
+      </div>
+
+      <div class="form-group mt-4 mb-3">
+        <button class="btn btn-primary btn-block" type="submit"
+                aria-describedby="submitHelp">로그인</button>
+        <small id="submitHelp" class="form-text text-muted">
+          <span>계정이 없으시다면</span>
+          <a href="#" th:href="@{/sign/up}">하나 만드세요</a>!
+        </small>
+      </div>
+
+    </form>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-sm-6">
+      <div style="text-align: center">
+        <span>- or -</span>
+      </div>
+      <label for="kakao">소셜 계정으로 로그인 하기</label>
+      <button id="kakao" name="kakao" onclick="popupKakaoLogin('/oauth/login')" class="btn btn-block p-2" style="background-color: #FEE500">🗨️ 카카오 로그인</button>
+    </div>
+  </div>
+</div>
+<script th:replace="fragments.html :: form-validation"></script>
+<script th:inline="javascript">
+  function popupKakaoLogin(uri) {
+    window.open(uri, 'popupKakaoLogin', 'width=480,height=500,scrollbars=0,toolbar=0,menubar=no')
+  }
+</script>
+</body>
+</html>

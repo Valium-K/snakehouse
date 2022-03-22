@@ -56,6 +56,7 @@ public class LeaderboardService {
         leaderboardRepository.deleteAllHistory(allHistory);
     }
 
+    @Transactional(readOnly = true)
     public List<Leaderboard> findAllMemberByTitle(Title title) {
         // Leaderboard + GameScore + (왜 member까지 조회하는지 모르겠다 lazy로 설정했는데)
         List<Leaderboard> allByTitle = leaderboardRepository.findAllByTitle(title);

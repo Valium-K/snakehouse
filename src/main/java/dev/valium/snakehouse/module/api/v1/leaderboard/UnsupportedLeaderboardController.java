@@ -36,6 +36,12 @@ public class UnsupportedLeaderboardController extends UnsupportedController {
         return unSupportedMethod();
     }
 
+    @ApiOperation(value = value, notes = notes)
+    @PostMapping(value = "/games/{title}/leaderboard/members")
+    public CommonResult postPlayedMembers() {
+        return unSupportedMethod();
+    }
+
     /********************************** 수정 ***************************************/
     @ApiOperation(value = value, notes = notes)
     @PutMapping(value = "/members/game/{title}/score/{score}")
@@ -55,6 +61,12 @@ public class UnsupportedLeaderboardController extends UnsupportedController {
         return unSupportedMethod();
     }
 
+    @ApiOperation(value = value, notes = notes)
+    @PutMapping(value = "/games/{title}/leaderboard/members")
+    public CommonResult putPlayedMembers() {
+        return unSupportedMethod();
+    }
+
     /********************************** 삭제 ***************************************/
     @ApiOperation(value = value, notes = notes)
     @DeleteMapping(value = "/members/game/{title}/score/{score}")
@@ -65,6 +77,12 @@ public class UnsupportedLeaderboardController extends UnsupportedController {
     @ApiOperation(value = value, notes = notes)
     @DeleteMapping(value = "/members/{id}/history/latest")
     public CommonResult deleteMemberLatestHistory() {
+        return unSupportedMethod();
+    }
+
+    @ApiOperation(value = value, notes = notes)
+    @DeleteMapping(value = "/games/{title}/leaderboard/members")
+    public CommonResult deletePlayedMembers() {
         return unSupportedMethod();
     }
 }

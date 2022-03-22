@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body onload="callParent()">
+<div>
+    <div id="token" th:text="${authInfo.getAccess_token()}"></div>
+</div>
+</body>
+<script>
+    function callParent(){
+        let token = document.getElementById("token").innerText;
+
+        window.opener.location.href="/oauth/login/kakao/finish?token=" + token;
+        window.close();
+    }
+</script>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:300,400,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Noto Sans KR", "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    }
+  </style>
+</head>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js" integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2" crossorigin="anonymous"></script>
+<script
+        src="https://code.jquery.com/jquery-3.6.0.slim.js"
+        integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY="
+        crossorigin="anonymous"></script>
+<body class="bg-light">
+<div class="container">
+
+  <div class="py-5 text-center">
+    <p class="lead mt-4 mb-5">S n a k e H o u s e A P I</p>
+    <h2>sign up</h2>
+  </div>
+  <div class="row justify-content-center">
+    <form class="needs-validation col-sm-6" action="#" th:action="@{/v1/sign-up/kakao}" method="post" novalidate>
+
+      <div class="form-group mb-3">
+        <input id="provider" type="text" name="provider" class="form-control" value="kakao" hidden>
+      </div>
+
+      <div class="form-group mb-3">
+        <input id="accessToken" type="text" th:name="accessToken" class="form-control"
+               th:value="${token}" hidden>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="name">닉네임</label>
+        <input id="name" type="text" name="name" class="form-control"
+               aria-describedby="namedHelp" required minlength="4" maxlength="20">
+        <small id="nameHelp" class="form-text text-muted">
+          닉네임은 4자 이상 20자 이내로 입력하세요.
+        </small>
+        <small class="invalid-feedback">닉네임을 입력하세요.</small>
+      </div>
+
+      <div class="form-group mt-4 mb-3">
+        <button class="btn btn-primary btn-block" type="submit" aria-describedby="submitHelp">회원가입</button>
+      </div>
+    </form>
+  </div>
+</div>
+<script th:replace="fragments.html :: form-validation"></script>
+</body>
+</html>

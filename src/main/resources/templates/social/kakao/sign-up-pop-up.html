@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
-<body>
-<button onclick="popupKakaoLogin()">KakaoLogin</button>
+<body onload="loadkakaoInfoPage()">
+loading...
 <div>
 
 </div>
@@ -15,8 +15,8 @@
     var url = /*[[${loginUrl}]]*/ 'default';
 
     /*]]>*/
-    function popupKakaoLogin() {
-        window.open(url, 'popupKakaoLogin', 'width=480,height=500,scrollbars=0,toolbar=0,menubar=no')
+    function loadkakaoInfoPage() {
+        location.href=url
     }
 </script>
 </body>

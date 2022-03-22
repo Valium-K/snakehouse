@@ -7,7 +7,7 @@ import java.util.List;
 
 @ApiModel
 public enum Title {
-    SNAKE;
+    SNAKE_NORMAL, SNAKE_HARD;
 
     public static void checkTitle(Title title) {
         if(!List.of(Title.values()).contains(title)) {
