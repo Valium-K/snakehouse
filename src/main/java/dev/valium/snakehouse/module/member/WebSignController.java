@@ -7,15 +7,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/sign")
 public class WebSignController {
 
-    @GetMapping("/in")
+    @GetMapping("/sign-in")
     public String signIn() {
         return "sign-in";
     }
 
-    @GetMapping("/up")
+    @GetMapping("/sign-up")
     public String SignUp() {
         return "sign-up";
     }

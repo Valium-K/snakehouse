@@ -25,7 +25,7 @@ public class SwaggerConfig {
 
     private ApiInfo swaggerInfo() {
         return new ApiInfoBuilder().title("SnakeHouse API Documentation")
-                .description("회원 및 게임 점수 관리 API에 대한 연동 문서입니다")
+                .description("SnakeHouseAPI는 회원 및 회원의 게임별 점수 관리를 위한 API입니다.")
                 .license("Valium").licenseUrl("https://valium.dev").version("1").build();
     }
 }
