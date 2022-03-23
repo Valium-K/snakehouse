@@ -39,7 +39,7 @@ General
 ## 프로젝트 이후 성과
 * Restful API 설계 경험
 * Embedded Redis를 이용한 캐싱 경험
-* Oauth2 로그인 구현 경험
+* Oauth2 방식의 로그인 구현 경험
 
 ## 프로젝트 설명
 ### UML
