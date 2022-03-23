@@ -36,17 +36,22 @@ General
 * SSL/TLS (Let's Encrypt)
 * swagger2 (2.6.1)
 
+## 프로젝트 이후 성과
+* Restful API 설계 경험
+* Embedded Redis를 이용한 캐싱 경험
+* Oauth2 로그인 구현 경험
+
 ## 프로젝트 설명
 ### UML
 ![img0.png](readme_data/img0.png)
 
 ### Web
 #### Sign-in
-![img.png](img.png)
+![img.png](readme_data/img.png)
 
 #### Sign-up
-![img_1.png](img_1.png)
+![img_1.png](readme_data/img_1.png)
 
 ### API
 #### Documentation page
-![img_2.png](img_2.png)
+![img_2.png](readme_data/img_2.png)
