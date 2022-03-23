@@ -6,18 +6,15 @@
 </head>
 <body onload="loadkakaoInfoPage()">
 loading...
-<div>
-
-</div>
+</body>
 <script th:inline="javascript">
     /*<![CDATA[*/
 
-    var url = /*[[${loginUrl}]]*/ 'default';
+    let url = /*[[${loginUrl}]]*/ 'default';
 
     /*]]>*/
     function loadkakaoInfoPage() {
-        location.href=url
+        location.href = url
     }
 </script>
-</body>
 </html>

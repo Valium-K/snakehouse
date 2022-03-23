@@ -25,7 +25,6 @@ decorator:
     p6spy:
       enable-logging: true
 
-#
-#server:
-#  servlet:
-#    context-path: /snakehouse
+server:
+  servlet:
+    context-path: /

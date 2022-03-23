@@ -9,7 +9,6 @@
     }
   </style>
 </head>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js" integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2" crossorigin="anonymous"></script>
 <body class="bg-light">
 <div class="container">
 
@@ -58,7 +57,7 @@
         <span>- or -</span>
       </div>
       <label for="kakao">소셜 계정으로 로그인 하기</label>
-      <button id="kakao" name="kakao" onclick="popupKakaoLogin('/oauth/login')" class="btn btn-block p-2" style="background-color: #FEE500">🗨️ 카카오 로그인</button>
+      <button id="kakao" name="kakao" th:onclick="|popupKakaoLogin('@{/}oauth/login')|" class="btn btn-block p-2" style="background-color: #FEE500">🗨️ 카카오 로그인</button>
     </div>
   </div>
 </div>

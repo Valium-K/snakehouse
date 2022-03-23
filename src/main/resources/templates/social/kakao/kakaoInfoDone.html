@@ -5,15 +5,15 @@
     <title>Title</title>
 </head>
 <body onload="callParent()">
-<div>
-    <div id="token" th:text="${authInfo.getAccess_token()}"></div>
-</div>
+<div id="token" th:text="${authInfo.getAccess_token()}" hidden></div>
+<div id="host" th:text="${host}" hidden></div>
 </body>
-<script>
+<script th:inline="javascript">
     function callParent(){
         let token = document.getElementById("token").innerText;
+        let host = document.getElementById("host").innerText;
 
-        window.opener.location.href="/oauth/login/kakao/finish?token=" + token;
+        window.opener.location.href = host + "/oauth/login/kakao/finish?token=" + token;
         window.close();
     }
 </script>

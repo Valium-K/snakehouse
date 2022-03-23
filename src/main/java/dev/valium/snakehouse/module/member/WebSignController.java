@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 @RequestMapping("/sign")
 public class WebSignController {
-    private final MemberService memberService;
 
     @GetMapping("/in")
     public String signIn() {
