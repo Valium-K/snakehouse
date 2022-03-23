@@ -53,6 +53,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/sign-in", "/sign-up").permitAll()
                 // GET 요청 허용 리스트
                 .antMatchers(HttpMethod.GET,
+                        "/",
                         "/hello-api/**",
                         "/robots.txt",
                         "/redis").permitAll()

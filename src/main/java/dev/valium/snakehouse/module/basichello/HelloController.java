@@ -18,12 +18,6 @@ public class HelloController {
         return "hello";
     }
 
-    @GetMapping("/robots.txt")
-    public String robots() {
-        return "User-agent: *\n" +
-                "Disallow: /";
-    }
-
     @GetMapping("/redis")
     public String redis() {
         Set<String> keys = redisTemplate.keys("*");
