@@ -47,7 +47,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests() // 리퀘스트에 대한 사용권한 체크
                 // 모든 요청 허용 리스트
                 .antMatchers(
-                        "/*/sign-in/**", "/*/sign-up", "/*/sign-up/**",
+                        "/*/sign-in", "/*/sign-in/**", "/*/sign-up", "/*/sign-up/**",
                         "/oauth/**",
                         "/exception/**",
                         "/sign/**").permitAll()

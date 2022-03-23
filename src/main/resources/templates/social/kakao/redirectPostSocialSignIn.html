@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body onload="(function() {document.getElementById('submit').click();})()">
+<div>
+    <form action="#" th:action="@{/v1/sign-in/kakao}" method="post">
+        <input id="provider" type="text" name="provider" th:value="${provider}" hidden>
+        <input id="accessToken" type="text" name="accessToken" th:value="${accessToken}" hidden>
+
+        <button id="submit" type="submit" hidden>login</button>
+    </form>
+</div>
+</body>
+</html>

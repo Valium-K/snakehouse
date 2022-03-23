@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.HashMap;
 
 @RequiredArgsConstructor
 @Controller
@@ -68,11 +71,16 @@ public class KakaoController {
     @GetMapping("/kakao/finish")
     public String finishSignUp(Model model, @RequestParam String token) {
 
+        // 이미 가입한 계정인 경우 로그인
         Profile profile = kakaoService.getProfile(token);
         if(memberService.predicateByMemberIdAndProvider(String.valueOf(profile.getId()), "kakao")) {
-            throw new DuplicatedMemberException("이미 가입한 회원입니다.");
+            model.addAttribute("provider", "kakao");
+            model.addAttribute("accessToken", token);
+
+            return "social/kakao/redirectPostSocialSignIn";
         }
 
+        // 계속 가입
         model.addAttribute("token", token);
 
         return "social/kakao/finish-sign-up";
