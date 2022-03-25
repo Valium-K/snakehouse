@@ -40,7 +40,8 @@ General
 * Restful API 설계 경험
 * Embedded Redis를 이용한 캐싱 경험
 * Oauth2 방식의 로그인 구현 경험
-
+* On Premise 구성 서버에 자동 갱신 SSL/TLS를 적용한 서비스 배포 경험
+* 
 ## 프로젝트 설명
 ### UML
 ![img0.png](readme_data/img0.png)
