@@ -3,6 +3,24 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <!-------------------------- fragments ---------------------------------------------------->
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=1.0, minimum-scale=1.0, shrink-to-fit=no, user-scalable=no">
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="SnakeHouse API" />
+
+    <title>SnakeHouse API</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:300,400,500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Noto Sans KR", "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        }
+    </style>
+</head>
+
 <script th:fragment="form-validation" type="application/javascript">
   (function () {
     'use strict';
